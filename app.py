@@ -73,7 +73,7 @@ def check_steam():
 
 def main():
     print("App started...")
-
+    send_email("TEST", "It works!")
     seen_epic = set()
     seen_steam = set()
 
@@ -98,4 +98,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main(send_email("TEST", "It works!"))
+    main()
