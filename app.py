@@ -4,9 +4,9 @@ import smtplib
 from email.mime.text import MIMEText
 
 # ================== CONFIG ==================
-EMAIL_ADDRESS = "dhruv77709@gmail.com"
-EMAIL_PASSWORD = "oypu lnxa hrfc jhwn"
-RECEIVER_EMAIL = "dhruv77709@gmail.com"
+EMAIL_ADDRESS =dhruv77709@gmail.com
+EMAIL_PASSWORD =oypu lnxa hrfc jhwn
+RECEIVER_EMAIL =dhruv77709@gmail.com
 
 CHECK_INTERVAL = 3600  # 1 hour
 
