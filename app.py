@@ -67,7 +67,6 @@ def main():
     print("App started...")
 
     # 🔥 TEST (remove later)
-    send_email("TEST", "Now it should work 🚀")
 
     seen_epic = set()
     seen_steam = set()
