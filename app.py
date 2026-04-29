@@ -1,12 +1,10 @@
 import requests
 import time
-import smtplib
-from email.mime.text import MIMEText
+import os
+import resend
 
 # ================== CONFIG ==================
-EMAIL_ADDRESS = dhruv77709@gmail.com
-EMAIL_PASSWORD = oypu lnxa hrfc jhwn
-RECEIVER_EMAIL = dhruv77709@gmail.com
+resend.api_key = os.getenv("RESEND_API_KEY")
 
 CHECK_INTERVAL = 3600  # 1 hour
 
@@ -19,18 +17,12 @@ STEAM_GAMES = {
 
 
 def send_email(subject, message):
-    msg = MIMEText(message)
-    msg["Subject"] = subject
-    msg["From"] = EMAIL_ADDRESS
-    msg["To"] = RECEIVER_EMAIL
-
-    try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.starttls()
-            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            server.send_message(msg)
-    except Exception as e:
-        print("Email error:", e)
+    resend.Emails.send({
+        "from": "onboarding@resend.dev",
+        "to": ["dhruv77709@gmail.com"],
+        "subject": subject,
+        "html": f"<p>{message}</p>"
+    })
 
 
 def check_epic():
@@ -73,7 +65,10 @@ def check_steam():
 
 def main():
     print("App started...")
-    send_email("TEST", "It works!")
+
+    # 🔥 TEST (remove later)
+    send_email("TEST", "Now it should work 🚀")
+
     seen_epic = set()
     seen_steam = set()
 
