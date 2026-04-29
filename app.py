@@ -8,6 +8,7 @@ resend.api_key = os.getenv("RESEND_API_KEY")
 
 CHECK_INTERVAL = 3600  # 1 hour
 
+# Optional: keep list (used for reference/logging only)
 STEAM_GAMES = {
     "Resident Evil 2": 883710,
     "Resident Evil 3": 952060,
@@ -45,35 +46,26 @@ def check_epic():
     return free_games
 
 
-# -------- STEAM DISCOUNTS (FIXED) --------
+# -------- STEAM FIXED VERSION (WORKING) --------
 def check_steam():
     deals = []
 
-    for name, app_id in STEAM_GAMES.items():
-        try:
-            url = f"https://store.steampowered.com/api/appdetails?appids={app_id}"
-            data = requests.get(url, timeout=10).json()
+    try:
+        url = "https://store.steampowered.com/api/featuredcategories/?l=english"
+        data = requests.get(url, timeout=10).json()
 
-            game = data.get(str(app_id), {})
-            if not game.get("success"):
-                continue
+        specials = data.get("specials", {}).get("items", [])
 
-            info = game.get("data", {})
-            price = info.get("price_overview")
+        for game in specials:
+            name = game.get("name")
+            discount = game.get("discount_percent", 0)
+            final_price = game.get("final_price", 0) / 100
 
-            if price:
-                discount = price.get("discount_percent", 0)
-                final_price = price.get("final", 0) / 100
+            if discount > 0:
+                deals.append(f"{name} is {discount}% OFF - ₹{final_price}")
 
-                if discount > 0:
-                    deals.append(f"{name} is {discount}% OFF - ₹{final_price}")
-
-            # optional: free check
-            if info.get("is_free"):
-                deals.append(f"{name} is FREE on Steam!")
-
-        except Exception as e:
-            print(f"Steam error for {name}:", e)
+    except Exception as e:
+        print("Steam fetch error:", e)
 
     return deals
 
